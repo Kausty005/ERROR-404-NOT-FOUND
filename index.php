@@ -910,7 +910,7 @@ session_start();
         <h1 class="hero-title">Your Health, Our Priority</h1>
         <p class="hero-subtitle">Book hospital beds instantly, access emergency services, and manage your healthcare appointments with ease. Join thousands of satisfied patients who trust us with their health.</p>
         <div class="hero-buttons">
-          <a href="book_appointment.php" class="hero-btn hero-btn-primary">Book Now</a>
+          <a href="doc_appointment.php" class="hero-btn hero-btn-primary">Book Now</a>
           <a href="booking_confirmation.php" class="hero-btn hero-btn-secondary">Emergency</a>
         </div>
       </div>
@@ -1031,7 +1031,7 @@ session_start();
       <div class="footer-section">
         <h4>Quick Links</h4>
         <ul>
-          <li><a href="book_appointment.php">Book Now</a></li>
+          <li><a href="doc_appointment.php">Book Now</a></li>
           <li><a href="call_ambulance.php">Emergency</a></li>
           <li><a href="#services">Services</a></li>
           <li><a href="aboutus.php">Why Us</a></li>
