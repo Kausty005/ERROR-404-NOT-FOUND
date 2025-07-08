@@ -120,7 +120,7 @@ session_start();
      Meet Our Team
     </h2>
     <div class="team-member">
-     <img alt="Portrait of KAUSTUBH GULWADE, GROUP LEADER AND BACKEND DEVELOPING MEMBER" height="100" src="kg.jpg" width="100"/>
+     <img alt="Portrait of KAUSTUBH GULWADE, BACKEND DEVELOPING MEMBER" height="100" src="kg.jpg" width="100"/>
      <div>
       <h3>
        KAUSTUBH GULWADE
@@ -131,7 +131,7 @@ session_start();
      </div>
     </div>
     <div class="team-member">
-     <img alt="Portrait of SRISHTI GUPTA, ASSISTANT GROUP LEADER AND BACKEND DEVELOPING MEMBER" height="100" src="srishti.jpg" width="100"/>
+     <img alt="Portrait of SRISHTI GUPTA, BACKEND DEVELOPING MEMBER" height="100" src="srishti.jpg" width="100"/>
      <div>
       <h3>
        SRISHTI GUPTA
@@ -154,7 +154,7 @@ session_start();
     </div>
     <DIV>
         <div class="team-member">
-            <img alt="Portrait of OMKAR KATARE GROUP MEMBER AND FRONTEND DEVELOPING MEMBER" height="100" src="Omkar.jpg" width="100"/>
+            <img alt="Portrait of OMKAR KATARE GROUP MEMBER AND FRONTEND DEVELOPING MEMBER" height="100" src="WhatsApp Image 2025-07-07 at 3.55.33 PM.jpeg" width="100"/>
             <div>
              <h3>
               OMKAR KATARE
