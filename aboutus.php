@@ -142,17 +142,6 @@ session_start();
      </div>
     </div>
     <div class="team-member">
-     <img alt="Portrait of CHAITANYA HAPSE, GROUP MEMBER AND FRONTEND DEVELOPING MEMBER" height="100" src="photo chaitanya.jpg" width="100"/>
-     <div>
-      <h3>
-       CHAITANYA HAPSE
-      </h3>
-      <p>
-       GROUP MEMBER AND FRONTEND DEVELOPING MEMBER
-      </p>
-     </div>
-    </div>
-    <div class="team-member">
      <img alt="Portrait of RIYA GUPTA, GROUP MEMBER AND FRONTEND DEVELOPING MEMBER" height="100" src="WhatsApp Image 2024-12-19 at 18.26.48_24aab607.jpg" width="100"/>
      <div>
       <h3>
@@ -165,10 +154,10 @@ session_start();
     </div>
     <DIV>
         <div class="team-member">
-            <img alt="Portrait of SWAPNIL GULBHILE , GROUP MEMBER AND FRONTEND DEVELOPING MEMBER" height="100" src="swapnil.jpg" width="100"/>
+            <img alt="Portrait of OMKAR KATARE GROUP MEMBER AND FRONTEND DEVELOPING MEMBER" height="100" src="Omkar.jpg" width="100"/>
             <div>
              <h3>
-              SWAPNIL GULBHILE
+              OMKAR KATARE
              </h3>
              <p>
                GROUP MEMBER AND FRONTEND DEVELOPING MEMBER
