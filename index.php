@@ -946,7 +946,7 @@ session_start();
                     </div>
                 </a>
                 
-                <a href="book_appointment.php" class="service-card" onclick="handleBooking()">
+                <a href="doc_appointment.php" class="service-card" onclick="handleBooking()">
                     <img src="https://i.pinimg.com/736x/6d/cb/25/6dcb2576a88b791d3d42c67b58157945.jpg" style="width: 100%; height: 250px; object-fit: cover;" alt="Book Appointment">
                     <div class="service-content">
                         <div class="service-icon">📅</div>
@@ -955,7 +955,7 @@ session_start();
                     </div>
                 </a>
                 
-                <a href="##" class="service-card" onclick="handleBooking()">
+                <a href="Online_Appointments.html" class="service-card" onclick="handleBooking()">
                     <img src="https://i.pinimg.com/736x/fc/0f/89/fc0f899aa5a7b9ebdbc6df62865ec87a.jpg" style="width: 100%; height: 250px; object-fit: cover;" alt="Online Consultation">
                     <div class="service-content">
                         <div class="service-icon">💻</div>
