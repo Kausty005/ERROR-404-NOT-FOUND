@@ -894,7 +894,7 @@ session_start();
       </div>
       <nav>
         <ul>
-          <li><a href="book_appointment.php">BOOK APPOINTMENT</a></li>
+          <li><a href="doc_appointment.php">BOOK APPOINTMENT</a></li>
           <li><a href="booking_confirmation.php">EMERGENCY</a></li>
           <li><a href="profile.php">PROFILE</a></li>
           <li><a href="aboutus.php">ABOUT US</a></li>
