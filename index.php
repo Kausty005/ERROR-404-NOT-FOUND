@@ -10,8 +10,7 @@
       padding: 0;
       box-sizing: border-box;
       scroll-behavior: smooth;
-    }
-    
+    }    
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: #f8fafc;
@@ -907,7 +906,7 @@
         <p class="hero-subtitle">Book hospital beds instantly, access emergency services, and manage your healthcare appointments with ease. Join thousands of satisfied patients who trust us with their health.</p>
         <div class="hero-buttons">
           <a href="book_appointment.php" class="hero-btn hero-btn-primary">Book Now</a>
-          <a href="#" class="hero-btn hero-btn-secondary">Emergency</a>
+          <a href="booking_confirmation.php" class="hero-btn hero-btn-secondary">Emergency</a>
         </div>
       </div>
       
