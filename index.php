@@ -891,7 +891,7 @@
       <nav>
         <ul>
           <li><a href="book_appointment.php">BOOK APPOINTMENT</a></li>
-          <li><a href="call_ambulance.php">EMERGENCY</a></li>
+          <li><a href="booking_confirmation.php">EMERGENCY</a></li>
           <li><a href="profile.php">PROFILE</a></li>
           <li><a href="aboutus.php">ABOUT US</a></li>
           <li><a href="register.php" class="login-btn">Login / Signup</a></li>
@@ -1080,7 +1080,7 @@
     }
 
     function handleLogin() {
-      alert("Redirecting to login/signup page...");
+      //alert("Redirecting to login/signup page...");
     }
 
     function performSearch() {
@@ -1093,15 +1093,15 @@
     }
 
     function handleEmergency() {
-      alert("Navigating to Emergency Services...");
+      //alert("Navigating to Emergency Services...");
     }
 
     function handleBooking() {
-      alert("Navigating to Appointment Booking...");
+     // alert("Navigating to Appointment Booking...");
     }
 
     function handleAmbulance() {
-      alert("Calling Ambulance Service...");
+      //alert("Calling Ambulance Service...");
     }
   </script>
 </body>
