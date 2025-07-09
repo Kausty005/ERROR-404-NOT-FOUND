@@ -1,6 +1,8 @@
 
 DROP TABLE IF EXISTS bookings;
 
+
+
 CREATE TABLE bookings (
     id INT AUTO_INCREMENT PRIMARY KEY,
     hospital_id INT,
