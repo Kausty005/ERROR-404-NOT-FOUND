@@ -1,4 +1,12 @@
 <?php
+session_start();
+
+// Check if user is logged in
+if (!isset($_SESSION['email'])) {
+    header("Location: login.php"); // Redirect to login page
+    exit();
+}
+
 // Database connection
 $server = "localhost";
 $username = "root";
@@ -34,6 +42,7 @@ $con->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Appointment</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
             --primary: #4361ee;
@@ -55,10 +64,12 @@ $con->close();
         }
         
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f5f7ff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             color: var(--dark);
             line-height: 1.6;
+            padding: 20px;
         }
         
         .container {
@@ -67,7 +78,19 @@ $con->close();
             padding: 2rem;
             background: white;
             border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #28a745, #20c997, #17a2b8);
         }
         
         header {
@@ -101,6 +124,19 @@ $con->close();
             color: var(--primary);
         }
         
+        .user-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            padding: 10px 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            color: #666;
+            font-size: 14px;
+        }
+        
         .slots-section {
             margin-top: 2rem;
         }
@@ -117,6 +153,7 @@ $con->close();
         .time-period {
             font-weight: 500;
             color: var(--primary);
+            font-size: 1.1rem;
         }
         
         .slots-grid {
@@ -213,6 +250,20 @@ $con->close();
             cursor: default;
         }
         
+        .slot.booked-success::after {
+            content: "BOOKED";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+        
         .back-button {
             display: inline-flex;
             align-items: center;
@@ -220,7 +271,7 @@ $con->close();
             gap: 0.5rem;
             margin: 2rem auto 0;
             padding: 0.8rem 1.5rem;
-            background: var(--primary);
+            background: linear-gradient(135deg, #28a745, #20c997);
             color: white;
             text-decoration: none;
             border-radius: 8px;
@@ -231,9 +282,9 @@ $con->close();
         }
         
         .back-button:hover {
-            background: var(--primary-dark);
+            background: linear-gradient(135deg, #218838, #1e9f85);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
         }
         
         .toast {
@@ -244,7 +295,7 @@ $con->close();
             color: white;
             padding: 1rem 1.5rem;
             border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             transform: translateY(100px);
             opacity: 0;
             transition: all 0.3s ease;
@@ -252,6 +303,7 @@ $con->close();
             display: flex;
             align-items: center;
             gap: 0.8rem;
+            max-width: 300px;
         }
         
         .toast.show {
@@ -260,7 +312,7 @@ $con->close();
         }
         
         .toast.success {
-            background: var(--success);
+            background: #28a745;
         }
         
         .toast.error {
@@ -280,13 +332,24 @@ $con->close();
             .slots-grid {
                 grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
             }
+            
+            .toast {
+                bottom: 10px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Book Your Appointment</h1>
+            <h1><i class="fas fa-calendar-check" style="margin-right: 10px; color: #28a745;"></i>Book Your Appointment</h1>
+            <div class="user-info">
+                <i class="fas fa-user-circle"></i>
+                <span>Logged in as: <?php echo htmlspecialchars($_SESSION['email']); ?></span>
+            </div>
             <div class="doctor-info">
                 <i class="fas fa-user-md doctor-icon"></i>
                 <h2><?php echo htmlspecialchars($doctor); ?></h2>
@@ -295,7 +358,7 @@ $con->close();
         
         <div class="slots-section">
             <div class="time-header">
-                <span class="time-period">Morning Session</span>
+                <span class="time-period"><i class="fas fa-sun" style="margin-right: 8px;"></i>Morning Session</span>
             </div>
             <div class="slots-grid">
                 <?php
@@ -319,7 +382,7 @@ $con->close();
             </div>
             
             <div class="time-header">
-                <span class="time-period">Evening Session</span>
+                <span class="time-period"><i class="fas fa-moon" style="margin-right: 8px;"></i>Evening Session</span>
             </div>
             <div class="slots-grid">
                 <?php
@@ -342,10 +405,12 @@ $con->close();
             </div>
         </div>
         
-        <a href="Online_Appointments.html" class="back-button">
-            <i class="fas fa-arrow-left"></i>
-            Back
-        </a>
+        <div style="text-align: center;">
+            <a href="Online_Appointments.html" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+                Back to Doctor Selection
+            </a>
+        </div>
     </div>
     
     <div id="toast" class="toast">
@@ -373,10 +438,10 @@ $con->close();
             // Show toast
             toast.classList.add('show');
             
-            // Hide after 3 seconds
+            // Hide after 4 seconds
             setTimeout(() => {
                 toast.classList.remove('show');
-            }, 3000);
+            }, 4000);
         }
         
         function bookSlot(slotElement) {
@@ -384,7 +449,7 @@ $con->close();
             const doctor = "<?php echo urlencode($doctor); ?>";
             
             if (slotElement.classList.contains('booked')) {
-                showToast('This slot is already booked!', 'error');
+                showToast('This slot is already fully booked!', 'error');
                 return;
             }
             
@@ -414,14 +479,19 @@ $con->close();
                         // Update UI for successful booking
                         slotElement.classList.add('booked-success');
                         slotElement.removeAttribute('onclick');
-                        showToast(`Appointment booked for ${slotTime}!`, 'success');
+                        showToast(`Appointment confirmed for ${slotTime}!`, 'success');
+                        
+                        // Refresh page after 2 seconds to update slot counts
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 2000);
                     } else {
-                        showToast(data || 'Error booking appointment', 'error');
+                        showToast(data || 'Error booking appointment. Please try again.', 'error');
                     }
                 })
                 .catch(error => {
                     slotElement.classList.remove('loading');
-                    showToast('Failed to book appointment. Please try again.', 'error');
+                    showToast('Failed to book appointment. Please check your connection and try again.', 'error');
                     console.error('Error:', error);
                 });
             }
