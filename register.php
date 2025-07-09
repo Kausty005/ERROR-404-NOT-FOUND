@@ -1,368 +1,237 @@
-
 <?php
 session_start();
-include 'connect.php';
+// Database connection
+$host = "localhost";
+$user = "root";
+$pass = ""; // Set your DB password
+$db = "User";
+$conn = new mysqli($host, $user, $pass, $db);
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['Signup'])) {
-        $name= $_POST['name'];
-        $email = $_POST['email'];
-        $password = $_POST['password'];
-        $cpassword =  $_POST['confirm_password'];
+// Error/success messages
+$err = "";
+$success = "";
 
-        // Check if email already exists
-        $emailquery = "SELECT * FROM signin WHERE email='$email'";
-        $query = mysqli_query($con, $emailquery);
-        $emailcount = mysqli_num_rows($query);
+// SIGN UP
+if (isset($_POST['signup'])) {
+    $name = trim($_POST['name']);
+    $email = trim($_POST['email']);
+    $password = $_POST['password'];
+    $cpassword = $_POST['cpassword'];
 
-        if ($emailcount > 0) {
-            ?>
-            <script>alert("Email already exists")</script>
-         <?php   
-
+    if ($password !== $cpassword) {
+        $err = "Passwords do not match!";
+    } elseif (strlen($password) < 6) {
+        $err = "Password must be at least 6 characters.";
+    } else {
+        // Check if email exists
+        $stmt = $conn->prepare("SELECT id FROM signin WHERE email=?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $stmt->store_result();
+        if ($stmt->num_rows > 0) {
+            $err = "Email already registered!";
         } else {
-            if ($password === $cpassword) {
-                $pass = password_hash($password, PASSWORD_BCRYPT);
-                
-                $insertquery = "INSERT INTO signin (name,email, password ,cpassword) VALUES ('$name' , '$email', '$pass','$cpassword')";
-                $check = mysqli_query($con, $insertquery);
-                
-                if ($check) {
-                    
-                    
-                } else {
-                    ?>
-                    <script>alert('Error inserting data')</script>
-                 <?php   
-                    
-                }
+            $hash = password_hash($password, PASSWORD_DEFAULT);
+            $stmt = $conn->prepare("INSERT INTO signin (name, email, password) VALUES (?, ?, ?)");
+            $stmt->bind_param("sss", $name, $email, $hash);
+            if ($stmt->execute()) {
+                $success = "Registration successful! Please sign in.";
             } else {
-                ?>
-                <script>alert( "Passwords do not match")</script>
-             <?php   
-                
+                $err = "Error occurred. Try again!";
             }
         }
+        $stmt->close();
     }
+}
 
-    if (isset($_POST['Login'])) {
-        $emaill = $_POST['email'];
-        $passwordl =  $_POST['password'];
-        $email_search = "SELECT * FROM signin WHERE email='$emaill'";
-        $query = mysqli_query($con, $email_search);
-        $email_pass=mysqli_fetch_assoc($query);
-        $db_email=$email_pass['email'];
-        $db_pass=$email_pass['password'];
-        if ($emaill==$db_email){
-            $_SESSION['email']=$db_email;
-            $_SESSION['name']=$email_pass['name'];
-           if(password_verify($passwordl,$db_pass)){
-          ?>
-           <script>location.replace('index.php')</script>
-         <?php
+// SIGN IN
+if (isset($_POST['signin'])) {
+    $email = trim($_POST['email']);
+    $password = $_POST['password'];
+    $stmt = $conn->prepare("SELECT id, name, password FROM signin WHERE email=?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $stmt->store_result();
+    if ($stmt->num_rows == 1) {
+        $stmt->bind_result($id, $name, $hash);
+        $stmt->fetch();
+        if (password_verify($password, $hash)) {
+            
+            $_SESSION['email'] = $email;
+            header("Location: index.php"); // Go to front page after login
+            exit();
         } else {
-            ?>
-            <script>alert("Incorrect password")</script>
-         <?php   
+            $err = "Incorrect password!";
         }
     } else {
-        ?>
-        <script>alert("Invalid email")</script>
-        <?php   
+        $err = "No account found with this email!";
     }
-  
-  }
+    $stmt->close();
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Sign In / Sign Up - Instant Bed Reserver</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Navigation Bar with Indicator</title>
-    <!-- CSS -->
-    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        body {
+            background: linear-gradient(135deg, #3333cf 0%, #053bc2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #042d67;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .auth-container {
+            background: #fff;
+            border-radius: 22px;
+            box-shadow: 0 10px 40px rgba(6,60,142,0.15);
+            max-width: 410px;
+            width: 100%;
+            padding: 40px 32px 32px 32px;
+            animation: fadeInUp 0.7s;
+        }
+        .auth-title {
+            text-align: center;
+            font-size: 29px;
+            font-weight: 700;
+            color: #3333cf;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+        .toggle-link {
+            text-align: center;
+            margin-bottom: 22px;
+            color: #0a3d89;
+            cursor: pointer;
+            font-size: 15px;
+            transition: color 0.2s;
+        }
+        .toggle-link:hover { color: #14be9a; }
+        .auth-form {
+            display: none;
+            flex-direction: column;
+            gap: 18px;
+        }
+        .auth-form.active {
+            display: flex;
+        }
+        .auth-form input {
+            padding: 13px 14px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            transition: border 0.3s;
+            background: #f8fafc;
+        }
+        .auth-form input:focus {
+            border-color: #3333cf;
+        }
+        .auth-btn {
+            background: linear-gradient(135deg, #14be9a, #0f9b7a);
+            color: white;
+            padding: 13px 0;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 17px;
+            cursor: pointer;
+            transition: background 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(65, 65, 70, 0.1);
+        }
+        .auth-btn:hover {
+            background: linear-gradient(135deg, #043476, #3b3bed);
+            box-shadow: 0 6px 20px rgba(65, 65, 70, 0.2);
+        }
+        .auth-message {
+            text-align: center;
+            color: #d90429;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+        .auth-success {
+            color: #14be9a;
+        }
+        .auth-container .logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 38px;
+            margin-bottom: 18px;
+        }
+        .auth-container .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #14be9a, #0f9b7a);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            margin-right: 12px;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        @media (max-width: 500px) {
+            .auth-container { padding: 25px 7vw; }
+        }
+    </style>
 </head>
-<style>
-    @import url("https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap");
-    body {
-        font-family: "Poppins", sans-serif;
-        font-size: 14px;
-        color: #222;
-        padding: 0px;
-        margin: 0px;
-        box-sizing: border-box;
-        background-size: 100vw 100vh;
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 340px;
-    }
-
-    * {
-        box-sizing: border-box;
-    }
-    *::before,
-    *::after {
-        box-sizing: border-box;
-    }
-
-    .profile-container {
-        background-color: white;
-        padding: 35px;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        width: 400px;
-    }
-
-    .main {
-        width: 340px;
-        height: 400px;
-        background: white;
-        border-radius: 3px;
-        padding: 30px;
-        position: relative;
-        display: flex;
-    }
-    .form_wrapper {
-        width: 100%;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        overflow: hidden;
-    }
-    .tile {
-        text-align: center;
-        margin-bottom: 20px;
-        width: 100%;
-        overflow: hidden;
-    }
-    .tile h3 {
-        font-size: 22px;
-        margin: 0px;
-        transition: all 0.3s ease;
-    }
-    .radio {
-        display: none;
-    }
-    .tab {
-        width: 50%;
-        border: solid 2px #f1f1f1;
-        height: 40px;
-        border-radius: 5px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 16px;
-        margin-bottom: 20px;
-        font-weight: 500;
-        transition: color 0.3s ease;
-        user-select: none;
-    }
-    .login_tab {
-        border-right: none;
-        border-top-right-radius: 0px;
-        border-bottom-right-radius: 0px;
-    }
-    .signup_tab {
-        border-left: none;
-        border-top-left-radius: 0px;
-        border-bottom-left-radius: 0px;
-    }
-    .shape {
-        background: linear-gradient(45deg, #22c2fc, #14a2c5) no-repeat center;
-        width: 50%;
-        height: calc(40px - 1px);
-        border-radius: 5px;
-        position: absolute;
-        top: 55.5px;
-        left: 0px;
-        opacity: 0.9;
-        transition: all 0.4s ease;
-    }
-    .shape:hover {
-        background: linear-gradient(-45deg, #22c2fc, #14a2c5) no-repeat center;
-    }
-    #login:checked ~ .shape {
-        left: 0px;
-    }
-    #login:checked ~ .login_tab {
-        border-color: transparent;
-        z-index: 1;
-        color: white;
-    }
-    #login:checked ~ .tile .signup {
-        display: none;
-    }
-    #login:checked ~ .form_wrap {
-        transform: translateX(0);
-    }
-    #login:checked ~ .form_wrap .signup_form {
-        opacity: 0;
-    }
-    #signup:checked ~ .shape {
-        left: 50%;
-    }
-    #signup:checked ~ .signup_tab {
-        border-color: transparent;
-        z-index: 1;
-        color: white;
-    }
-    #signup:checked ~ .tile .login {
-        display: none;
-    }
-    #signup:checked ~ .form_wrap {
-        transform: translateX(-100%);
-    }
-    #signup:checked ~ .form_wrap .login_form {
-        opacity: 0;
-    }
-    a {
-        color: #22c2fc;
-        text-decoration: none;
-        transition: all 0.3s linear;
-    }
-    a:hover {
-        color: #14a2c5;
-    }
-    .form_wrap {
-        display: flex;
-        width: 100%;
-        flex: 0 0 100%;
-        transition: transform 0.3s ease, opacity 0.2s ease;
-    }
-    .form_fild {
-        width: 100%;
-        flex: 0 0 100%;
-        transition: all 0.5s ease;
-    }
-    .input_group {
-        width: 100%;
-        margin-bottom: 12px;
-    }
-    .input {
-        border: solid #f1f1f1 2px;
-        border-radius: 5px;
-        width: 100%;
-        height: 40px;
-        padding: 5px 10px;
-        font-size: 15px;
-        font-weight: 500;
-        outline: none;
-        transition: all 0.3s linear;
-    }
-    .input::placeholder {
-        color: #adadad;
-    }
-    .input:hover {
-        border-color: rgba(248, 66, 151, 0.3);
-    }
-    .input:focus {
-        border-color: rgba(248, 66, 151, 0.3);
-    }
-    .forgot {
-        display: block;
-        margin-bottom: 15px;
-        padding: 0px 2px;
-    }
-    .btn {
-        width: 100%;
-        height: 40px;
-        margin-bottom: 20px;
-        border: none;
-        outline: none;
-        font-size: 16px;
-        font-weight: 500;
-        letter-spacing: 0.8px;
-        color: white;
-        background: linear-gradient(45deg, #22c2fc, #14a2c5) no-repeat center;
-        border-radius: 5px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s linear;
-    }
-    .btn:hover {
-        background: linear-gradient(-45deg, #22c2fc, #14a2c5) no-repeat center;
-    }
-    .btn:active {
-        transform: scale(0.95);
-    }
-    .not_mem {
-        text-align: center;
-    }
-    .not_mem label {
-        pointer-events: none;
-    }
-    .not_mem label span {
-        pointer-events: all;
-        color:  #14a2c5;
-        text-decoration: none;
-        transition: all 0.3s linear;
-    }
-    .not_mem label span:hover {
-        color: #22c2fc;
-    }
-</style>
-
 <body>
-    <section class="main">
-        <div class="form_wrapper">
-            <input type="radio" class="radio" name="radio" id="login" checked />
-            <input type="radio" class="radio" name="radio" id="signup" />
-            <div class="tile">
-                <h3 class="login">Login Form</h3>
-                <h3 class="signup">Signup Form</h3>
-            </div>
-
-            <label class="tab login_tab" for="login">
-                Login
-            </label>
-
-            <label class="tab signup_tab" for="signup">
-                Signup
-            </label>
-            <span class="shape"></span>
-            <div class="form_wrap">
-                <div class="form_fild login_form">
-                  <form method="post" >
-                    <div class="input_group" >
-                        <input type="email" name="email" class="input" placeholder="Email Address" />
-                    </div>
-                    <div class="input_group">
-                        <input type="password" name="password" class="input" placeholder="Password" />
-                    </div>
-                    <input type="submit" class="btn"  name="Login" value="Login" />
-                    <div class="not_mem">
-                        <label for="signup">Not a member? <span>Signup now</span></label>
-                    </div>
-                  </form>
-                </div>
-                <div class="form_fild signup_form">
-                  <form method="post" action="register.php">
-                    <div class="input_group" >
-                        <input type="text" name="name" class="input" placeholder="Name" />
-                    </div>
-                    <div class="input_group">
-                        <input type="email" name="email" class="input" placeholder="Email Address" />
-                    </div>
-                    <div class="input_group">
-                        <input type="password" name="password" class="input" placeholder="Password" />
-                    </div>
-                    <div class="input_group">
-                        <input type="password" name="confirm_password" class="input" placeholder="Confirm Password" />
-                    </div>
-                    <input type="submit" class="btn" name="Signup" value="Signup" />
-                  </form>
-                </div>
-            </div>
+    <div class="auth-container">
+        <div class="logo">
+            <span class="logo-icon">🏥</span>
+            <span style="font-weight:700;color:#4e4ef0;font-size:22px;">INSTANT BED RESERVER</span>
         </div>
-    </section>
+        <div class="auth-title">Account Access</div>
+        <?php if ($err): ?>
+            <div class="auth-message"><?= htmlspecialchars($err) ?></div>
+        <?php endif; ?>
+        <?php if ($success): ?>
+            <div class="auth-message auth-success"><?= htmlspecialchars($success) ?></div>
+        <?php endif; ?>
+        <div class="toggle-link" id="show-signin">Already have an account? <b>Sign In</b></div>
+        <form class="auth-form" id="signin-form" method="post" autocomplete="off" style="display: none;">
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button class="auth-btn" type="submit" name="signin">Sign In</button>
+        </form>
+        <div class="toggle-link" id="show-signup">Don't have an account? <b>Sign Up</b></div>
+        <form class="auth-form" id="signup-form" method="post" autocomplete="off">
+            <input type="text" name="name" placeholder="Full Name" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Password (min 6 chars)" required minlength="6">
+            <input type="password" name="cpassword" placeholder="Confirm Password" required minlength="6">
+            <button class="auth-btn" type="submit" name="signup">Sign Up</button>
+        </form>
+    </div>
+    <script>
+        // Toggle between forms
+        const signinForm = document.getElementById('signin-form');
+        const signupForm = document.getElementById('signup-form');
+        const showSignin = document.getElementById('show-signin');
+        const showSignup = document.getElementById('show-signup');
+
+        function showForm(form) {
+            signinForm.style.display = form === 'signin' ? 'flex' : 'none';
+            signupForm.style.display = form === 'signup' ? 'flex' : 'none';
+        }
+        // Default to signup if just registered, else signin
+        <?php if($success): ?>
+            showForm('signin');
+        <?php else: ?>
+            showForm('signup');
+        <?php endif; ?>
+        showSignin.onclick = () => showForm('signin');
+        showSignup.onclick = () => showForm('signup');
+    </script>
 </body>
 </html>
-
-

@@ -1,5 +1,5 @@
-CREATE DATABASE hospital_db;
-USE hospital_db;
+CREATE DATABASE appointment_db;
+USE appointment_db;
 
 CREATE TABLE online_appointments (
     id INT PRIMARY KEY AUTO_INCREMENT,

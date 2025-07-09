@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 ?>
 
 
@@ -913,14 +914,18 @@ session_start();
         <div class="logo" onclick="scrollToTop()">INSTANT BED RESERVER</div>
       </div>
       <nav>
-        <ul>
-          <li><a href="my_appointments.php">BOOK APPOINTMENT</a></li>
-          <li><a href="booking_confirmation.php">EMERGENCY</a></li>
-          <li><a href="profile.php">PROFILE</a></li>
-          <li><a href="aboutus.php">ABOUT US</a></li>
-          <li><a href="register.php" class="login-btn">Login / Signup</a></li>
-        </ul>
-      </nav>
+  <ul>
+    <li><a href="my_appointments.php">BOOK APPOINTMENT</a></li>
+    <li><a href="booking_confirmation.php">EMERGENCY</a></li>
+    <li><a href="aboutus.php">ABOUT US</a></li>
+    <?php if(isset($_SESSION['user_id'])): ?>
+      <li><a href="profile.php">PROFILE</a></li>
+      <li><a href="logout.php" class="login-btn">Logout</a></li>
+    <?php else: ?>
+      <li><a href="register.php" class="login-btn">Login / Signup</a></li>
+    <?php endif; ?>
+  </ul>
+</nav>
     </div>
   </header>
 
