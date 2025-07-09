@@ -396,7 +396,7 @@ $result = mysqli_stmt_get_result($stmt);
                 <i class="fas fa-calendar-times"></i>
                 <h3>No Appointments Found</h3>
                 <p>You haven't booked any appointments yet. Start by booking your first appointment!</p>
-                <a href="index.php" class="btn-back">
+                <a href="doc_appointment.php" class="btn-back">
                     <i class="fas fa-plus-circle"></i>
                     Book New Appointment
                 </a>
