@@ -58,6 +58,7 @@ if (isset($_POST['signin'])) {
         if (password_verify($password, $hash)) {
             
             $_SESSION['email'] = $email;
+            $_SESSION['name'] = $name;
             header("Location: index.php"); // Go to front page after login
             exit();
         } else {
