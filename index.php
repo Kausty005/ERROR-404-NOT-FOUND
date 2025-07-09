@@ -1,3 +1,8 @@
+<?php
+session_start();
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,8 +15,7 @@
       padding: 0;
       box-sizing: border-box;
       scroll-behavior: smooth;
-    }
-    
+    }    
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: #f8fafc;
@@ -890,7 +894,7 @@
       </div>
       <nav>
         <ul>
-          <li><a href="book_appointment.php">BOOK APPOINTMENT</a></li>
+          <li><a href="my_appointments.php">BOOK APPOINTMENT</a></li>
           <li><a href="booking_confirmation.php">EMERGENCY</a></li>
           <li><a href="profile.php">PROFILE</a></li>
           <li><a href="aboutus.php">ABOUT US</a></li>
@@ -906,8 +910,8 @@
         <h1 class="hero-title">Your Health, Our Priority</h1>
         <p class="hero-subtitle">Book hospital beds instantly, access emergency services, and manage your healthcare appointments with ease. Join thousands of satisfied patients who trust us with their health.</p>
         <div class="hero-buttons">
-          <a href="book_appointment.php" class="hero-btn hero-btn-primary">Book Now</a>
-          <a href="#" class="hero-btn hero-btn-secondary">Emergency</a>
+          <a href="doc_appointment.php" class="hero-btn hero-btn-primary">Book Now</a>
+          <a href="booking_confirmation.php" class="hero-btn hero-btn-secondary">Emergency</a>
         </div>
       </div>
       
@@ -942,7 +946,7 @@
                     </div>
                 </a>
                 
-                <a href="book_appointment.php" class="service-card" onclick="handleBooking()">
+                <a href="doc_appointment.php" class="service-card" onclick="handleBooking()">
                     <img src="https://i.pinimg.com/736x/6d/cb/25/6dcb2576a88b791d3d42c67b58157945.jpg" style="width: 100%; height: 250px; object-fit: cover;" alt="Book Appointment">
                     <div class="service-content">
                         <div class="service-icon">📅</div>
@@ -951,7 +955,7 @@
                     </div>
                 </a>
                 
-                <a href="##" class="service-card" onclick="handleBooking()">
+                <a href="Online_Appointments.html" class="service-card" onclick="handleBooking()">
                     <img src="https://i.pinimg.com/736x/fc/0f/89/fc0f899aa5a7b9ebdbc6df62865ec87a.jpg" style="width: 100%; height: 250px; object-fit: cover;" alt="Online Consultation">
                     <div class="service-content">
                         <div class="service-icon">💻</div>
@@ -1022,10 +1026,12 @@
         </div>
       </div>
 
+      
+
       <div class="footer-section">
         <h4>Quick Links</h4>
         <ul>
-          <li><a href="book_appointment.php">Book Now</a></li>
+          <li><a href="doc_appointment.php">Book Now</a></li>
           <li><a href="call_ambulance.php">Emergency</a></li>
           <li><a href="#services">Services</a></li>
           <li><a href="aboutus.php">Why Us</a></li>

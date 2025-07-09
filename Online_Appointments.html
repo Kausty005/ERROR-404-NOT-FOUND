@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book an Appointment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .doctor-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .doctor-card {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .doctor-card h3 {
+            margin: 0;
+            color: #007bff;
+        }
+
+        .doctor-card button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .doctor-card button:hover {
+            background: #0056b3;
+        }
+
+        /* Back button styling */
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .home {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin: 20px;
+        }
+
+        .home:hover {
+            background: #5a6268;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Select a Doctor</h1>
+        <div class="doctor-list">
+            <div class="doctor-card">
+                <h3>Dr. Abhay Kulkarni - General Physician</h3>
+                <button onclick="window.location.href='online_booking.php?doctor=Dr. Abhay Kulkarni'">Book Now</button>
+            </div>
+            <div class="doctor-card">
+                <h3>Dr. Mohan Joshi - Dermatologist</h3>
+                <button onclick="window.location.href='online_booking.php?doctor=Dr. Mohan Joshi'">Book Now</button>
+            </div>
+            <div class="doctor-card">
+                <h3>Dr. Abhinav Shinde - Pediatrician</h3>
+                <button onclick="window.location.href='online_booking.php?doctor=Dr. Abhinav Shinde'">Book Now</button>
+            </div>
+            <div class="doctor-card">
+                <h3>Dr. Harsh Gaikwad - Psychologists</h3>
+                <button onclick="window.location.href='online_booking.php?doctor=Dr. Harsh Gaikwad'">Book Now</button>
+            </div>
+        </div>
+
+        <!-- Back Button -->
+        <div class="button-container">
+            <button onclick="window.location.href='option.html'" class="home">Prev</button>
+            <button onclick="window.location.href='welcome.php'" class="home">Home</button>
+        </div>
+    </div>
+</body>
+</html>
