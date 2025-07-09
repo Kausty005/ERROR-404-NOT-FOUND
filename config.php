@@ -2,7 +2,7 @@
 session_start();
 
 
-$con = mysqli_connect("localhost", "root", "", "asep web");
+$con = mysqli_connect("localhost", "root", "", "asep_web");
 if ($con){
     ?>
     

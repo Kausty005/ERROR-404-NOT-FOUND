@@ -1,6 +1,6 @@
 <?php
 include 'config.php';
-session_start();
+//session_start();
 
 if (!isset($_SESSION['email'])) {
     header("Location:register.php");
@@ -43,207 +43,246 @@ if(isset($_POST['submit'])) {
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile Page</title>
-
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f0f2f5;
-        }
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-        .profile-box {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 600px;
-            text-align: center;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: boxReveal 1s ease-out forwards;
-        }
 
-        @keyframes boxReveal {
-            0% {
-                opacity: 0;
-                transform: translateY(20px);
-            }
+.profile-box {
+    background: #fff;
+    padding: 40px 32px 32px 32px;
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+    animation: boxReveal 0.8s cubic-bezier(.4,0,.2,1) forwards;
+    opacity: 0;
+    transform: translateY(30px);
+}
 
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+@keyframes boxReveal {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
-        .profile-box h2 {
-            margin-bottom: 20px;
-            color: #333;
-        }
+.profile-box h2 {
+    margin-bottom: 28px;
+    color: #222;
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
 
-        .profile-picture {
-            width: 150px;
-            height: 150px;
-            margin: 10px auto;
-            background: #ddd;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            overflow: hidden;
-            border-radius: 5px;
-            position: relative;
-            transition: box-shadow 0.3s;
-        }
+.profile-picture {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 24px auto;
+    background: #f3f4f6;
+    border-radius: 50%;
+    border: 3px solid #e0e7ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    overflow: hidden;
+    transition: box-shadow 0.3s, border-color 0.3s;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    position: relative;
+    font-size: 2.2rem;
+    color: #a5b4fc;
+}
 
-        .profile-picture:hover {
-            box-shadow: 0 0 10px #007bff;
-        }
+.profile-picture:hover {
+    border-color: #6366f1;
+    box-shadow: 0 4px 16px #6366f14d;
+}
 
-        .profile-picture img {
-            width: 100%;
-            height: auto;
-        }
+.profile-picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 
-        .input-group {
-            margin: 10px 0;
-            position: relative;
-        }
+.input-group {
+    margin: 18px 0 0 0;
+    position: relative;
+    text-align: left;
+}
 
-        .input-group input,
-        .input-group select,
-        .input-group textarea {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            outline: none;
-            resize: none;
-            transition: all 0.3s ease;
-        }
+.input-group input,
+.input-group select,
+.input-group textarea {
+    width: 100%;
+    padding: 13px 12px 13px 12px;
+    font-size: 1rem;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 7px;
+    background: #f9fafb;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    margin-top: 8px;
+}
 
-        .input-group input:focus,
-        .input-group select:focus,
-        .input-group textarea:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-        }
+.input-group input:focus,
+.input-group select:focus,
+.input-group textarea:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 2px #6366f133;
+}
 
-        .input-group label {
-            position: absolute;
-            top: 50%;
-            left: 10px;
-            transform: translateY(-50%);
-            background: white;
-            padding: 0 5px;
-            color: #888;
-            font-size: 14px;
-            transition: all 0.3s;
-            pointer-events: none;
-        }
+.input-group label {
+    position: absolute;
+    top: 0;
+    left: 14px;
+    transform: translateY(-50%);
+    background: #fff;
+    padding: 0 6px;
+    color: #7b7b7b;
+    font-size: 0.98rem;
+    pointer-events: none;
+    transition: all 0.2s;
+    opacity: 0.85;
+}
 
-        .input-group input:focus+label,
-        .input-group input:not(:placeholder-shown)+label,
-        .input-group select:focus+label,
-        .input-group select:not([value=""])+label,
-        .input-group textarea:focus+label,
-        .input-group textarea:not(:placeholder-shown)+label {
-            top: -10px;
-            font-size: 12px;
-            color: #007bff;
-        }
+.input-group input:focus+label,
+.input-group input:not(:placeholder-shown)+label,
+.input-group select:focus+label,
+.input-group select:not([value=""])+label,
+.input-group textarea:focus+label,
+.input-group textarea:not(:placeholder-shown)+label {
+    top: -16px;
+    left: 8px;
+    font-size: 0.88rem;
+    color: #6366f1;
+    background: #fff;
+    opacity: 1;
+}
 
-        .btn {
-            padding: 10px 15px;
-            font-size: 16px;
-            color: white;
-            background: #007bff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
+.btn {
+    margin-top: 28px;
+    padding: 12px 0;
+    width: 48%;
+    font-size: 1.07rem;
+    color: #fff;
+    background: linear-gradient(90deg, #6366f1 0%, #4f46e5 100%);
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+    transition: background 0.25s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px #6366f12a;
+    display: inline-block;
+}
 
-        .btn:hover {
-            background: #0056b3;
-        }
+.btn:hover {
+    background: linear-gradient(90deg, #4f46e5 0%, #6366f1 100%);
+    box-shadow: 0 4px 16px #6366f14d;
+}
+
+.btn + .btn {
+    margin-left: 4%;
+    background: #a5b4fc;
+    color: #222;
+}
+
+@media (max-width: 600px) {
+    .profile-box {
+        padding: 18px 6vw;
+        max-width: 98vw;
+    }
+    .btn {
+        width: 100%;
+        margin-top: 18px;
+    }
+    .btn + .btn {
+        margin-left: 0;
+        margin-top: 12px;
+    }
+}
     </style>
 </head>
 
 <body>
-   <form method="post" action="profile.php" enctype="multipart/form-data">
-    <div class="profile-box">
-        <h2>Profile Page</h2>
-        <div class="profile-picture" id="profilePicture">
-        <?php if(!empty($profile['profile_image'])) { ?>
-        <img src="<?php echo $profile['profile_image']; ?>" alt="Profile Picture">
-        <?php } else { ?>
-        <span>Upload</span>
-        <?php } ?>
-     </div>
-     <input type="file" name="file" id="fileInput" style="display: none;" accept="image/*">
-        <div class="input-group">
-            <input type="text"  name="name" id="name" placeholder=" " value="<?php echo htmlspecialchars($profile['name'] ?? ''); ?>" required>
-            <label for="name">Name</label>
-        </div>
+    <form method="post" action="profile.php" enctype="multipart/form-data" autocomplete="off">
+        <div class="profile-box">
+            <h2>Profile Page</h2>
+            <div class="profile-picture" id="profilePicture" title="Click to upload/change your photo">
+                <?php if(!empty($profile['profile_image'])) { ?>
+                    <img src="<?php echo htmlspecialchars($profile['profile_image']); ?>" alt="Profile Picture">
+                <?php } else { ?>
+                    <span style="font-size:2.5rem; color:#a5b4fc;">&#128247;</span>
+                <?php } ?>
+            </div>
+            <input type="file" name="file" id="fileInput" style="display: none;" accept="image/*">
+            
+            <div class="input-group">
+                <input type="text" name="name" id="name" placeholder=" " value="<?php echo htmlspecialchars($profile['name'] ?? ''); ?>" required>
+                <label for="name">Name</label>
+            </div>
 
-        <div class="input-group">
-            <input type="number"  name="age" id="age" placeholder=" " value="<?php echo htmlspecialchars($profile['age']??"");?>"required >
-            <label for="age">Age</label>
-        </div>
+            <div class="input-group">
+                <input type="number" name="age" id="age" placeholder=" " value="<?php echo htmlspecialchars($profile['age']??"");?>" required>
+                <label for="age">Age</label>
+            </div>
 
-        <div class="input-group">
-            <input type="number" name="height" id="height" placeholder=" " value="<?php echo htmlspecialchars($profile['height']??"");?>"required>
-            <label for="height">Height (cm)</label>
-        </div>
+            <div class="input-group">
+                <input type="number" name="height" id="height" placeholder=" " value="<?php echo htmlspecialchars($profile['height']??"");?>" required>
+                <label for="height">Height (cm)</label>
+            </div>
 
-        <div class="input-group">
-            <input type="number" name="weight" id="weight" placeholder=" " value="<?php echo htmlspecialchars($profile['weight']??"");?>"required>
-            <label for="weight">Weight (kg)</label>
-        </div>
+            <div class="input-group">
+                <input type="number" name="weight" id="weight" placeholder=" " value="<?php echo htmlspecialchars($profile['weight']??"");?>" required>
+                <label for="weight">Weight (kg)</label>
+            </div>
 
-        <div class="input-group">
-            <textarea id="medicalHistory" name="medicalhistory" rows="4" placeholder=" " required><?php echo $profile['medical_history']??"";?></textarea>
-            <label for="medicalHistory">Medical History</label>
-        </div>
+            <div class="input-group">
+                <textarea id="medicalHistory" name="medicalhistory" rows="4" placeholder=" " required><?php echo htmlspecialchars($profile['medical_history']??"");?></textarea>
+                <label for="medicalHistory">Medical History</label>
+            </div>
 
-        <div class="input-group">
-            <select id="bloodGroup" name="bloodgroup" placeholder=" " required>
-               <option value="" disabled selected ></option>
-               <option value="A+" <?php if (($profile['blood_group'] ?? '') == 'A+') echo 'selected'; ?>>A+</option>
-               <option value="A-" <?php if (($profile['blood_group'] ?? '') == 'A-') echo 'selected'; ?>>A-</option>
-               <option value="B+" <?php if (($profile['blood_group'] ?? '') == 'B+') echo 'selected'; ?>>B+</option>
-               <option value="B-" <?php if (($profile['blood_group'] ?? '') == 'B-') echo 'selected'; ?>>B-</option>
-               <option value="O+" <?php if (($profile['blood_group'] ?? '') == 'O+') echo 'selected'; ?>>O+</option>
-               <option value="O-" <?php if (($profile['blood_group'] ?? '') == 'O-') echo 'selected'; ?>>O-</option>
-               <option value="AB+" <?php if (($profile['blood_group'] ?? '') == 'AB+') echo 'selected'; ?>>AB+</option>
-               <option value="AB-" <?php if (($profile['blood_group'] ?? '') == 'AB-') echo 'selected'; ?>>AB-</option>
-            </select>
-            <label for="bloodGroup">Blood Group</label>
-        </div>
+            <div class="input-group">
+                <select id="bloodGroup" name="bloodgroup" placeholder=" " required>
+                    <option value="" disabled <?php if (empty($profile['blood_group'])) echo 'selected'; ?>></option>
+                    <option value="A+" <?php if (($profile['blood_group'] ?? '') == 'A+') echo 'selected'; ?>>A+</option>
+                    <option value="A-" <?php if (($profile['blood_group'] ?? '') == 'A-') echo 'selected'; ?>>A-</option>
+                    <option value="B+" <?php if (($profile['blood_group'] ?? '') == 'B+') echo 'selected'; ?>>B+</option>
+                    <option value="B-" <?php if (($profile['blood_group'] ?? '') == 'B-') echo 'selected'; ?>>B-</option>
+                    <option value="O+" <?php if (($profile['blood_group'] ?? '') == 'O+') echo 'selected'; ?>>O+</option>
+                    <option value="O-" <?php if (($profile['blood_group'] ?? '') == 'O-') echo 'selected'; ?>>O-</option>
+                    <option value="AB+" <?php if (($profile['blood_group'] ?? '') == 'AB+') echo 'selected'; ?>>AB+</option>
+                    <option value="AB-" <?php if (($profile['blood_group'] ?? '') == 'AB-') echo 'selected'; ?>>AB-</option>
+                </select>
+                <label for="bloodGroup">Blood Group</label>
+            </div>
 
-        <div class="input-group">
-            <select id="gender" name="gender" placeholder=" " required>
-                <option value="" disabled selected></option>
-                <option value="Male" <?php if (($profile['gender'] ?? '') == 'Male') echo 'selected'; ?>>Male</option>
-                <option value="Female" <?php if (($profile['gender'] ?? '') == 'Female') echo 'selected'; ?>>Female</option>
-                <option value="Other" <?php if (($profile['gender'] ?? '') == 'Other') echo 'selected'; ?>>Other</option>
-            </select>
-            <label for="gender">Gender</label>
+            <div class="input-group">
+                <select id="gender" name="gender" placeholder=" " required>
+                    <option value="" disabled <?php if (empty($profile['gender'])) echo 'selected'; ?>></option>
+                    <option value="Male" <?php if (($profile['gender'] ?? '') == 'Male') echo 'selected'; ?>>Male</option>
+                    <option value="Female" <?php if (($profile['gender'] ?? '') == 'Female') echo 'selected'; ?>>Female</option>
+                    <option value="Other" <?php if (($profile['gender'] ?? '') == 'Other') echo 'selected'; ?>>Other</option>
+                </select>
+                <label for="gender">Gender</label>
+            </div>
+            <button class="btn" type="submit" name="submit">Save Profile</button>
+            <button type="button" class="btn" onclick="window.location.href='index.php';">Back</button>
         </div>
-        <button class="btn" type="submit" name="submit">Save Profile</button>
-        <button type="button" class="btn" onclick="window.location.href='index.php';">Back</button>
-    </div>
     </form>
     <script>
         const profilePicture = document.getElementById('profilePicture');
@@ -265,6 +304,4 @@ if(isset($_POST['submit'])) {
         });
     </script>
 </body>
-
 </html>
-
