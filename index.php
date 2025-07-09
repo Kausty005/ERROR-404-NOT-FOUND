@@ -237,7 +237,7 @@ session_start();
       box-shadow: 0 -5px 20px rgba(1, 52, 118, 0.05);
       margin-top: -30px;
       position: relative;
-      z-index: 2;
+      /* z-index: 2; */
     }
     
     .search-container {
@@ -296,29 +296,46 @@ session_start();
       background: linear-gradient(135deg, #2a2a2e, #414146);
     }
 
+    .search-bar {
+      position: relative; /* Add this line */
+      display: flex;
+      align-items: center;
+      background: white;
+      border-radius: 50px;
+      box-shadow: 0 10px 30px rgba(1, 52, 118, 0.05);
+      overflow: hidden;
+      border: 2px solid #e9ecef;
+      transition: all 0.3s;
+      z-index: 2;
+    }
+
     .search-suggestions {
       position: absolute;
-      top: 45px;
-      background-color: rgb(220, 213, 213);
-      width: 60%;
+      top: 110px;
+      left: 300px;
+      background: white;
+      width: 55%;
       max-height: 300px;
       overflow-y: auto;
-      box-shadow: 0 4px 6px rgb(0, 0, 0, 0.1);
-      z-index: 1000;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      z-index: 3;
       display: none;
+      border-radius: 10px;
+      color: black;
     }
     .suggestion-item {
       padding: 10px;
       cursor: pointer;
       transition: background 0.3s;
-    }
+      }
+
     .suggestion-item:hover {
       background: #f0f0f0;
     }
-    
     .services-section {
       padding: 80px 5%;
       background: white;
+      z-index:0;
     }
     
     .services-container {
@@ -951,8 +968,8 @@ session_start();
       <div class="search-bar">
         <div class="search-icon">🔍</div>
         <input type="text" id="search-input" placeholder="Search Diseases" onkeyup="showSuggestions()">
-        <div id="searchSuggestions" class="search-suggestions"></div>
       </div>
+      <div id="searchSuggestions" class="search-suggestions"></div>
     </div>
   </section>
 
