@@ -53,11 +53,6 @@ Real-time bed & ambulance integration
 
 Unified approach combining emergency handling, remote care, and data management
 
-⚠️ Limitations:
-Internet Dependency: May not work well in rural areas with poor connectivity
-
-Hospital Integration: Effectiveness depends on how many hospitals join and update their data regularly
-
 👥 Team Members:
 Riya Gupta – riyagupta17jee@gmail.com
 
