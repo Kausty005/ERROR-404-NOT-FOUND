@@ -914,7 +914,6 @@ session_start();
         <div class="logo" onclick="scrollToTop()">INSTANT BED RESERVER</div>
       </div>
       <nav>
-<<<<<<< HEAD
   <ul>
     <li><a href="my_appointments.php">BOOK APPOINTMENT</a></li>
     <li><a href="booking_confirmation.php">EMERGENCY</a></li>
@@ -927,23 +926,6 @@ session_start();
     <?php endif; ?>
   </ul>
 </nav>
-=======
-        <ul>
-          <li><a href="my_appointments.php">BOOK APPOINTMENT</a></li>
-          <li><a href="booking_confirmation.php">EMERGENCY</a></li>
-          <li><a href="profile.php">PROFILE</a></li>
-          <li><a href="aboutus.php">ABOUT US</a></li>
-          <?php
-          if (isset($_SESSION['email'])) {
-              echo '<button><li><a href="logout.php" class="login-btn">Logout</a></li></button>';
-          } else {
-              echo '<button><li><a href="register.php" class="login-btn">Login / Signup</a></li></button>';
-          }
-        ?>
-        
-        </ul>
-      </nav>
->>>>>>> 55330f6296c62719e8b42559034c9120f2493202
     </div>
   </header>
 
