@@ -65,8 +65,8 @@ body {
     padding: 40px 32px 32px 32px;
     border-radius: 18px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-    width: 100%;
-    max-width: 420px;
+    width: 150%;
+    max-width: 920px;
     text-align: center;
     animation: boxReveal 0.8s cubic-bezier(.4,0,.2,1) forwards;
     opacity: 0;

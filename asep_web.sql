@@ -13,3 +13,5 @@ CREATE TABLE `profile` (
     blood_group TEXT COLLATE utf8mb4_general_ci NOT NULL,
     gender TEXT COLLATE utf8mb4_general_ci NOT NULL
 );
+
+
