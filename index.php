@@ -918,7 +918,14 @@ session_start();
           <li><a href="booking_confirmation.php">EMERGENCY</a></li>
           <li><a href="profile.php">PROFILE</a></li>
           <li><a href="aboutus.php">ABOUT US</a></li>
-          <li><a href="register.php" class="login-btn">Login / Signup</a></li>
+          <?php
+          if (isset($_SESSION['email'])) {
+              echo '<button><li><a href="logout.php" class="login-btn">Logout</a></li></button>';
+          } else {
+              echo '<button><li><a href="register.php" class="login-btn">Login / Signup</a></li></button>';
+          }
+        ?>
+        
         </ul>
       </nav>
     </div>
