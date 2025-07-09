@@ -918,7 +918,7 @@ session_start();
     <li><a href="my_appointments.php">BOOK APPOINTMENT</a></li>
     <li><a href="booking_confirmation.php">EMERGENCY</a></li>
     <li><a href="aboutus.php">ABOUT US</a></li>
-    <?php if(isset($_SESSION['user_id'])): ?>
+    <?php if(isset($_SESSION['email'])): ?>
       <li><a href="profile.php">PROFILE</a></li>
       <li><a href="logout.php" class="login-btn">Logout</a></li>
     <?php else: ?>
