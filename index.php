@@ -294,6 +294,26 @@ session_start();
     .search-btn:hover {
       background: linear-gradient(135deg, #2a2a2e, #414146);
     }
+
+    .search-suggestions {
+      position: absolute;
+      top: 45px;
+      background-color: rgb(220, 213, 213);
+      width: 60%;
+      max-height: 300px;
+      overflow-y: auto;
+      box-shadow: 0 4px 6px rgb(0, 0, 0, 0.1);
+      z-index: 1000;
+      display: none;
+    }
+    .suggestion-item {
+      padding: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .suggestion-item:hover {
+      background: #f0f0f0;
+    }
     
     .services-section {
       padding: 80px 5%;
@@ -328,7 +348,7 @@ session_start();
     grid-template-columns: repeat(4, 1fr); 
     gap: 20px; 
     margin-top: 40px;
-}
+    }
     
     
     .service-card {
@@ -925,8 +945,8 @@ session_start();
     <div class="search-container">
       <div class="search-bar">
         <div class="search-icon">🔍</div>
-        <input type="text" id="search-input" placeholder="Search doctors, hospitals, clinics, or medical services..." onkeyup="searchFunction()">
-        <button class="search-btn" onclick="performSearch()">Search</button>
+        <input type="text" id="search-input" placeholder="Search Diseases" onkeyup="showSuggestions()">
+        <div id="searchSuggestions" class="search-suggestions"></div>
       </div>
     </div>
   </section>
@@ -1072,6 +1092,51 @@ session_start();
 
   <script>
     
+    // Disease data
+    const diseases = [
+      "Diabetes", "Hypertension", "Cancer", "Influenza",
+      "COVID-19", "Asthma", "Heart Disease", "Stroke",
+      "Arthritis", "COPD"
+    ];
+  
+    function showSuggestions() {
+      const input = document.getElementById("search-input").value.toLowerCase();
+      const suggestions = document.getElementById("searchSuggestions");
+      suggestions.innerHTML = '';
+  
+      if (input.length > 0) {
+        const filtered = diseases.filter(disease => 
+          disease.toLowerCase().includes(input)
+        ).slice(0, 10);
+  
+        filtered.forEach(disease => {
+          const div = document.createElement('div');
+          div.className = 'suggestion-item';
+          div.textContent = disease;
+          div.onclick = () => selectDisease(disease);
+          suggestions.appendChild(div);
+        });
+  
+        suggestions.style.display = 'block';
+      } else {
+        suggestions.style.display = 'none';
+      }
+    }
+  
+    function selectDisease(disease) {
+      document.getElementById("search-input").value = disease;
+      document.getElementById("searchSuggestions").style.display = 'none';
+      // Redirect to disease details page
+      window.location.href = `disease_details.php?disease=${encodeURIComponent(disease)}`;
+    }
+  
+    // Close suggestions when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.search-bar')) {
+        document.getElementById("searchSuggestions").style.display = 'none';
+      }
+    });
+
     const scrollTopBtn = document.querySelector('.scroll-top');
     window.addEventListener('scroll', () => {
       if (window.scrollY > 200) {
